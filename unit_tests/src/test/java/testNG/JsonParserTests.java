@@ -68,23 +68,11 @@ public class JsonParserTests {
         assertThrows(NoSuchFileException.class, () -> jsonParser.readFromFile(new File("nonexistent.json")));
     }
 
-    @Test
-    public void testReadFromMalformedJsonFile() {
+    @Test(dataProvider = "malformedJsonData")
+    public void testReadFromMalformedJsonFile(String fileName, String jsonContent) {
         jsonParser = new JsonParser();
 
         File tempDir = new File("src/main/resources/");
-        assertMalformedJsonException(tempDir, "malformed1.json", "{ \"key\": \"value\"");
-
-        assertMalformedJsonException(tempDir, "malformed2.json", "{ key: {{\"value\" }");
-
-        assertMalformedJsonException(tempDir, "malformed3.json", "{ \"array\": {1,2,3}");
-
-        assertMalformedJsonException(tempDir, "malformed4.json", "{ \"key1\": \"value1\" \"key2\": \"value2\" }");
-
-        assertMalformedJsonException(tempDir, "malformed5.json", "{ \"key\": /value/ }");
-    }
-
-    private void assertMalformedJsonException(File tempDir, String fileName, String jsonContent) {
         File malformedJsonFile = new File(tempDir.toString(), fileName);
         writeMalformedJsonToFile(malformedJsonFile, jsonContent);
         assertThrows(JsonParseException.class, () -> jsonParser.readFromFile(malformedJsonFile));
@@ -97,4 +85,17 @@ public class JsonParserTests {
             throw new RuntimeException("Error writing malformed JSON to file", e);
         }
     }
+
+    @DataProvider(name = "malformedJsonData")
+    public Object[][] malformedJsonData() {
+        return new Object[][]{
+                {"malformed1.json", "{ \"key\": \"value\""},
+                {"malformed2.json", "{ key: {{\"value\" }"},
+                {"malformed3.json", "{ \"array\": {1,2,3}"},
+                {"malformed4.json", "{ \"key1\": \"value1\" \"key2\": \"value2\" }"},
+                {"malformed5.json", "{ \"key\": /value/ }"}
+        };
+    }
+
+
 }
