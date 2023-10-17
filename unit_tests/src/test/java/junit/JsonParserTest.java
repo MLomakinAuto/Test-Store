@@ -1,3 +1,4 @@
+package junit;
 
 import com.google.gson.JsonParseException;
 import org.junit.jupiter.api.*;
