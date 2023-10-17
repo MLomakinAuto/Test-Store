@@ -1,6 +1,9 @@
 
 import com.google.gson.JsonParseException;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import parser.JsonParser;
 import parser.NoSuchFileException;
 import shop.Cart;
@@ -9,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,25 +69,14 @@ public class JsonParserTest {
         assertThrows(NoSuchFileException.class, () -> jsonParser.readFromFile(new File("nonexistent.json")));
     }
 
-    @Test
-    void testReadFromMalformedJsonFile() {
+    @ParameterizedTest
+    @MethodSource("jsonFileParameters")
+    void testReadFromMalformedJsonFile(String fileName, String jsonContent) {
         jsonParser = new JsonParser();
-
         File tempDir = new File("src/main/resources/");
-        assertMalformedJsonException(tempDir, "malformed1.json", "{ \"key\": \"value\"");
-
-        assertMalformedJsonException(tempDir, "malformed2.json", "{ key: {{\"value\" }");
-
-        assertMalformedJsonException(tempDir, "malformed3.json", "{ \"array\": {1,2,3}");
-
-        assertMalformedJsonException(tempDir, "malformed4.json", "{ \"key1\": \"value1\" \"key2\": \"value2\" }");
-
-        assertMalformedJsonException(tempDir, "malformed5.json", "{ \"key\": /value/ }");
-    }
-
-    private void assertMalformedJsonException(File tempDir, String fileName, String jsonContent) {
         File malformedJsonFile = new File(tempDir.toString(), fileName);
         writeMalformedJsonToFile(malformedJsonFile, jsonContent);
+
         assertThrows(JsonParseException.class, () -> jsonParser.readFromFile(malformedJsonFile));
     }
 
@@ -93,5 +86,15 @@ public class JsonParserTest {
         } catch (IOException e) {
             throw new RuntimeException("Error writing malformed JSON to file", e);
         }
+    }
+
+    private static Stream<Arguments> jsonFileParameters() {
+        return Stream.of(
+                Arguments.of("malformed1.json", "{ \"key\": \"value\""),
+                Arguments.of("malformed2.json", "{ key: {{\"value\" }"),
+                Arguments.of("malformed3.json", "{ \"array\": {1,2,3}"),
+                Arguments.of("malformed4.json", "{ \"key1\": \"value1\" \"key2\": \"value2\" }"),
+                Arguments.of("malformed5.json", "{ \"key\": /value/ }")
+        );
     }
 }
