@@ -1,0 +1,5 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MyTestSuite">
+    <parameter name="username" value="testuser" />
+    <parameter name="password" value="secret123" />
+</suite>

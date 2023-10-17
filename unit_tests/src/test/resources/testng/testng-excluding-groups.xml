@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Excluding Groups Suite">
+    <test name="Test 2">
+        <groups>
+            <run>
+                <exclude name="group2" />
+            </run>
+        </groups>
+        <classes>
+            <class name="shop.Cart" />
+        </classes>
+    </test>
+</suite>
