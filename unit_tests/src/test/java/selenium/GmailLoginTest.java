@@ -48,7 +48,7 @@ public class GmailLoginTest {
         passwordNextButton.click();
 
         WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(VALIDATION_ERROR));
-        Assertions.assertTrue(errorMessage.isDisplayed(), "Error message not displayed: Wrong password");
+        Assertions.assertEquals("Wrong password. Try again or click Forgot password to reset it.", errorMessage.getText(), "Error message text mismatch.");
 
     }
 }
