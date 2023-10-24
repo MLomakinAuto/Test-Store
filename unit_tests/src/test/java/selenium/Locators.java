@@ -7,5 +7,5 @@ public class Locators {
     public static final By NEXT_BUTTON = By.id("identifierNext");
     public static final By PASSWORD_INPUT = By.xpath("//input[@type='password']");
     public static final By PASSWORD_NEXT_BUTTON = By.id("passwordNext");
-    public static final By VALIDATION_ERROR = By.xpath("//span[contains(text(),'Wrong password. Try again or click Forgot password to reset it.')]");
+    public static final By VALIDATION_ERROR = By.xpath("//div[@class='OyEIQ uSvLId' and @jsname='h9d3hd']");
 }

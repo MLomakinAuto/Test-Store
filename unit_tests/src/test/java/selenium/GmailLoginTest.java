@@ -37,7 +37,6 @@ public class GmailLoginTest {
         WebElement emailInput = driver.findElement(EMAIL_INPUT);
         emailInput.sendKeys("mykolalomakin854@gmail.com");
 
-
         WebElement nextButton = driver.findElement(NEXT_BUTTON);
         nextButton.click();
 
