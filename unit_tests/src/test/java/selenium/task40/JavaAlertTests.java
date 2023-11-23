@@ -1,51 +1,47 @@
 package selenium.task40;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import selenium.helpers.BaseTest;
 
 import static selenium.Locators.*;
 
-public class JavaAlertTests {
-    WebDriver driver;
-
-    @BeforeEach
-    void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\New folder (2)\\chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://demo.seleniumeasy.com/javascript-alert-box-demo.html");
-    }
-
-    @AfterEach
-    void tearDown() {
-        driver.quit();
-    }
+public class JavaAlertTests extends BaseTest {
 
     @Test
     public void alertBox() {
+        driver.get("https://demo.seleniumeasy.com/javascript-alert-box-demo.html");
         driver.findElement(ALERT_BOX).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
+        try {
+            driver.switchTo().alert();
+            Assertions.fail("Alert is not closed");
+        } catch (NoAlertPresentException e) {
+        }
     }
 
-    @Test
-    public void alertConfirmBoxAccept(){
 
+    @Test
+    public void alertConfirmBoxAccept() {
+        driver.get("https://demo.seleniumeasy.com/javascript-alert-box-demo.html");
         driver.findElement(ALERT_CONFIRM_BOX).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
 
         WebElement resultElement = driver.findElement(CONFIRM_DEMO);
         String resultText = resultElement.getText();
-        assert resultText.contains("You pressed OK!") : "Test failed: Expected text 'You pressed OK!' not found in the result.";
+
+        Assertions.assertTrue(resultText.contains("You pressed OK!"), "Test failed: Expected text 'You pressed OK!' not found in the result.");
     }
+
     @Test
-    public void alertConfirmBoxCancel(){
+    public void alertConfirmBoxCancel() {
+        driver.get("https://demo.seleniumeasy.com/javascript-alert-box-demo.html");
         driver.findElement(ALERT_CONFIRM_BOX).click();
         Alert alert = driver.switchTo().alert();
         alert.dismiss();
@@ -56,7 +52,8 @@ public class JavaAlertTests {
     }
 
     @Test
-    public void promptBox(){
+    public void promptBox() {
+        driver.get("https://demo.seleniumeasy.com/javascript-alert-box-demo.html");
         driver.findElement(ALERT_PROMPT).click();
         Alert alert = driver.switchTo().alert();
         alert.sendKeys("test");

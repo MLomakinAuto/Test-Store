@@ -16,7 +16,8 @@ public class GmailLoginTest {
 
     @BeforeEach
     void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\New folder (2)\\chromedriver.exe");
+        String driverPath = "src/main/resources/chromedriver/chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", driverPath);
 
         driver = new ChromeDriver();
 

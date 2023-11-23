@@ -1,36 +1,21 @@
 package selenium.task40;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import selenium.helpers.BaseTest;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static selenium.Locators.*;
 
-public class LoginTest {
+public class LoginTest extends BaseTest {
     WebDriver driver;
 
-    @BeforeEach
-    void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\New folder (2)\\chromedriver.exe");
-
-        driver = new ChromeDriver();
-
-        driver.manage().window().maximize();
-    }
-
-    @AfterEach
-    void tearDown() {
-        driver.quit();
-    }
 
     @ParameterizedTest
     @CsvSource({"mykolalomakin854@gmail.com, 12345", "mykolalomakin854+1@gmail.com, 12345"})

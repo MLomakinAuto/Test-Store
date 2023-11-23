@@ -1,34 +1,13 @@
 package selenium.task40;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import selenium.helpers.BaseTest;
 
-public class DownloadProgressTest {
-
-    private WebDriver driver;
-
-    @BeforeAll
-    public static void setUpDriver() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\New folder (2)\\chromedriver.exe");
-    }
-
-    @BeforeEach
-    public void setUp() {
-        driver = new ChromeDriver();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+public class DownloadProgressTest extends BaseTest {
 
     @Test
     public void testDownloadProgress() {
@@ -37,14 +16,10 @@ public class DownloadProgressTest {
         WebElement downloadButton = driver.findElement(By.id("cricle-btn"));
         downloadButton.click();
 
-        while (true) {
-            WebElement progressBar = driver.findElement(By.xpath("//div[@class='percenttext']"));
-            String progressText = progressBar.getText();
-            if (progressText.contains("50%")) {
-                break;
-            }
-        }
-        driver.navigate().refresh();
+        WebDriverWait wait = new WebDriverWait(driver, 60);
 
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//div[@class='percenttext']"), "50%"));
+
+        driver.navigate().refresh();
     }
 }

@@ -1,12 +1,11 @@
 package selenium.task40;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import selenium.helpers.BaseTest;
+import selenium.helpers.Employee;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,21 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class TableDataTest {
-    private WebDriver driver;
+public class TableDataTest extends BaseTest {
 
-    @BeforeEach
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\New folder (2)\\chromedriver.exe");
-        driver = new ChromeDriver();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 
     @Test
     public void testFilterTableData() {
@@ -38,9 +24,11 @@ public class TableDataTest {
         dropdown.click();
         WebElement option10 = driver.findElement(By.xpath("//*[@id='example_length']/label/select/option[1]"));
         option10.click();
-        List<Map<String, String>> dataMapList = new ArrayList<>();
+        List<Employee> employeeList = new ArrayList<>();
+
         int x = 30;
         double y = 95400;
+
         try {
             do {
                 List<WebElement> rows = driver.findElements(By.xpath("//table[@id='example']/tbody/tr"));
@@ -58,12 +46,12 @@ public class TableDataTest {
                     double salary = Double.parseDouble(salaryStr);
 
                     if (age > x && salary <= y) {
-                        Map<String, String> dataMap = new HashMap<>();
-                        dataMap.put("Name", name);
-                        dataMap.put("Position", position);
-                        dataMap.put("Office", office);
+                        Employee employee = new Employee();
+                        employee.setName(name);
+                        employee.setPosition(position);
+                        employee.setOffice(office);
 
-                        dataMapList.add(dataMap);
+                        employeeList.add(employee);
                     }
                 }
 
@@ -75,9 +63,28 @@ public class TableDataTest {
                 }
             } while (true);
 
-            for (Map<String, String> dataMap : dataMapList) {
-                System.out.println("Name: " + dataMap.get("Name") + ", Position: " + dataMap.get("Position") + ", Office: " + dataMap.get("Office"));
-            }
+            List<Employee> expectedEmployeeList = new ArrayList<>();
+            Employee employee1 = new Employee();
+            employee1.setName("A. Cox");
+            employee1.setPosition("Junior Technical Author");
+            employee1.setOffice("San Francisco");
+            expectedEmployeeList.add(employee1);
+
+            Employee employee2 = new Employee();
+            employee2.setName("G. Joyce");
+            employee2.setPosition("Developer");
+            employee2.setOffice("Edinburgh");
+            expectedEmployeeList.add(employee2);
+
+            Employee employee3 = new Employee();
+            employee3.setName("M. House");
+            employee3.setPosition("Integration Specialist");
+            employee3.setOffice("Sidney");
+            expectedEmployeeList.add(employee3);
+
+
+            Assertions.assertEquals(expectedEmployeeList, employeeList, "Table data does not match expected results.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
