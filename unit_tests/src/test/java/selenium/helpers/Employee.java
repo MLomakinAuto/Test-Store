@@ -31,6 +31,10 @@ public class Employee {
                 Objects.equals(office, employee.office);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, position, office);
+    }
 
     @Override
     public String toString() {
