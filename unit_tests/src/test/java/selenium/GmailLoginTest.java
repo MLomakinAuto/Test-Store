@@ -16,7 +16,8 @@ public class GmailLoginTest {
 
     @BeforeEach
     void setUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\kolka\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+        String driverPath = "src/main/resources/chromedriver/chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", driverPath);
 
         driver = new ChromeDriver();
 
@@ -30,7 +31,11 @@ public class GmailLoginTest {
 
     @Test
     void testGmailLogin() {
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } // This is a static wait - sleep will wait specified amount of sec and will do nothing during waiting
         WebDriverWait wait = new WebDriverWait(driver, 20);
         driver.get("https://accounts.google.com/signin");
 
