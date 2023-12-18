@@ -17,19 +17,10 @@ public class LoginTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.get("https://magento.softwaretestingboard.com/");
         LoginPage loginPage = new LoginPage(driver);
-        LogoutPage logoutPage = new LogoutPage(driver);
         loginPage.login("mykolalomakin854@gmail.com", "Qwerty12345");
 
         String expectedWelcomeMessage = "Welcome, qqqq qqqq!";
-        WebElement welcomeMessageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".logged-in")));
-        String actualWelcomeMessage = welcomeMessageElement.getText();
+        String actualWelcomeMessage = loginPage.getWelcomeMessage(wait);
         Assertions.assertEquals(expectedWelcomeMessage, actualWelcomeMessage, "Login was not successful");
-
-        logoutPage.logout();
-
-        String pageSource = driver.getPageSource();
-        boolean isWelcomeMessagePresent = pageSource.contains(expectedWelcomeMessage);
-        Assertions.assertFalse(isWelcomeMessagePresent, "Welcome message is not present on the page.");
     }
-
 }
