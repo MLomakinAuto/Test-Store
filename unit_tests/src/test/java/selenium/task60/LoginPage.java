@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
     private WebDriver driver;
@@ -20,9 +22,16 @@ public class LoginPage {
     @FindBy(id = "send2")
     private WebElement signUp;
 
+    @FindBy(css = ".logged-in")
+    private WebElement welcomeMessage;
+
     public LoginPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+    }
+
+    public String getWelcomeMessage(WebDriverWait wait) {
+        return wait.until(ExpectedConditions.visibilityOf(welcomeMessage)).getText();
     }
 
     public void login(String username, String password) {
